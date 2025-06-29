@@ -1,7 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:koyama/database/home_page/_fetch.dart';
+import 'package:koyama/database/home_page/category_preview.dart';
+import 'package:koyama/ui/home_page/category_section.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  late Future<List<CategoryPreview>> categories;
+
+  @override
+  void initState() {
+    super.initState();
+    categories = fetch();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,11 +54,34 @@ class HomePage extends StatelessWidget {
                     height: 70,
                     fit: BoxFit.contain,
                     errorBuilder: (context, error, stackTrace) {
-                      return const Icon(Icons.image_not_supported, size: 72, color: Colors.grey);
+                      return const Icon(
+                        Icons.image_not_supported,
+                        size: 72,
+                        color: Colors.grey,
+                      );
                     },
                   ),
                 ],
               ),
+            ),
+
+            FutureBuilder(
+              future: categories,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Column(
+                    children:
+                        snapshot.data!
+                            .map(
+                              (category) => CategorySection(preview: category),
+                            )
+                            .toList(),
+                  );
+                } else if (snapshot.hasError) {
+                  return Text('${snapshot.error}');
+                }
+                return const CircularProgressIndicator();
+              },
             ),
 
             // Carrusel de categorías con imágenes
@@ -59,27 +98,6 @@ class HomePage extends StatelessWidget {
                 }),
               ),
             ),
-
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              child: Text('Sopas',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-            ),
-
-            // Productos (Sopas)
-            Expanded(
-              child: GridView.count(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                crossAxisCount: 2,
-                mainAxisSpacing: 10,
-                crossAxisSpacing: 10,
-                childAspectRatio: 0.8,
-                children: [
-                  _foodCard(context, 'Shoyu Ramen', 'Arrachera o Camarón', '\$145'),
-                  _foodCard(context, 'Miso Ramen', 'Pollo, Cerdo o Res', '\$135'),
-                ],
-              ),
-            ),
           ],
         ),
       ),
@@ -89,56 +107,13 @@ class HomePage extends StatelessWidget {
         selectedItemColor: Colors.red,
         unselectedItemColor: Colors.black,
         items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Inicio',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Inicio'),
           BottomNavigationBarItem(
             icon: Icon(Icons.notifications),
             label: 'Notificaciones',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Perfil',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
         ],
-      ),
-    );
-  }
-
-  Widget _foodCard(BuildContext context, String title, String description, String price) {
-    return GestureDetector(
-      onTap: () {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Seleccionaste: $title')),
-        );
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-          // Aquí puedes agregar una imagen de fondo si lo deseas
-        ),
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Text(title,
-                style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold)),
-            Text(description,
-                style: const TextStyle(
-                  color: Colors.white70,
-                )),
-            Text(price,
-                style: const TextStyle(
-                  color: Colors.white,
-                )),
-          ],
-        ),
       ),
     );
   }
@@ -190,7 +165,11 @@ class _CategoryButtonState extends State<_CategoryButton> {
             width: 65,
             height: 65,
             errorBuilder: (context, error, stackTrace) {
-              return const Icon(Icons.image_not_supported, size: 48, color: Colors.white);
+              return const Icon(
+                Icons.image_not_supported,
+                size: 48,
+                color: Colors.white,
+              );
             },
           ),
         ),

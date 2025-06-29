@@ -41,29 +41,29 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBBxaKP7a0yIysTYcukpSKc24hbtbsL8HU',
-    appId: '1:242009344403:web:d64688731cef0a187fc066',
-    messagingSenderId: '242009344403',
-    projectId: 'koyama-sushi-40f3f',
-    authDomain: 'koyama-sushi-40f3f.firebaseapp.com',
-    storageBucket: 'koyama-sushi-40f3f.firebasestorage.app',
-    measurementId: 'G-H7E55TWKMC',
+    apiKey: 'AIzaSyABneX0ZpOgQiDi5Hbf0VoFld7u4mfoAyM',
+    appId: '1:730244009596:web:bb42f5d5b90371272383f9',
+    messagingSenderId: '730244009596',
+    projectId: 'koyama-sushi-app',
+    authDomain: 'koyama-sushi-app.firebaseapp.com',
+    storageBucket: 'koyama-sushi-app.firebasestorage.app',
+    measurementId: 'G-98V5K2LX8K',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAScsNorw-VhWnSW2I-LHpWfW7A0ZT16DE',
-    appId: '1:242009344403:android:a0ad18663c02fa0c7fc066',
-    messagingSenderId: '242009344403',
-    projectId: 'koyama-sushi-40f3f',
-    storageBucket: 'koyama-sushi-40f3f.firebasestorage.app',
+    apiKey: 'AIzaSyDnNUE0njZX7ZjCbyXPce7x_kQ9QI5oegQ',
+    appId: '1:730244009596:android:83fe4c65ccd45b8e2383f9',
+    messagingSenderId: '730244009596',
+    projectId: 'koyama-sushi-app',
+    storageBucket: 'koyama-sushi-app.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCFWw0zKyjkDCo8vAv8D8-EC5x1wItdQDY',
-    appId: '1:242009344403:ios:2e06018aaa3bb0d17fc066',
-    messagingSenderId: '242009344403',
-    projectId: 'koyama-sushi-40f3f',
-    storageBucket: 'koyama-sushi-40f3f.firebasestorage.app',
+    apiKey: 'AIzaSyAFlCFEie6tirDDb9PjeSPcIby-Ql7m7Ao',
+    appId: '1:730244009596:ios:080f63f2345365b72383f9',
+    messagingSenderId: '730244009596',
+    projectId: 'koyama-sushi-app',
+    storageBucket: 'koyama-sushi-app.firebasestorage.app',
     iosBundleId: 'com.example.koyama',
   );
 

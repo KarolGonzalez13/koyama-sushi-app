@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "242009344403",
-    "project_id": "koyama-sushi-40f3f",
-    "storage_bucket": "koyama-sushi-40f3f.firebasestorage.app"
+    "project_number": "730244009596",
+    "project_id": "koyama-sushi-app",
+    "storage_bucket": "koyama-sushi-app.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:242009344403:android:a0ad18663c02fa0c7fc066",
+        "mobilesdk_app_id": "1:730244009596:android:83fe4c65ccd45b8e2383f9",
         "android_client_info": {
           "package_name": "com.example.koyama"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAScsNorw-VhWnSW2I-LHpWfW7A0ZT16DE"
+          "current_key": "AIzaSyDnNUE0njZX7ZjCbyXPce7x_kQ9QI5oegQ"
         }
       ],
       "services": {
