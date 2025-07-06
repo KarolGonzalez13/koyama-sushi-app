@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:koyama/database/home_page/_fetch.dart';
 import 'package:koyama/database/home_page/category_preview.dart';
 import 'package:koyama/ui/home_page/category_section.dart';
+import 'package:koyama/ui/home_page/dish_card.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -23,82 +24,76 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[100],
+      appBar: AppBar(
+        title: RichText(
+          overflow: TextOverflow.visible,
+          softWrap: true,
+          textAlign: TextAlign.start,
+          text: const TextSpan(
+            text: 'Koyama',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+            children: [
+              TextSpan(text: 'Sushi', style: TextStyle(color: Colors.red)),
+            ],
+          ),
+        ),
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+        centerTitle: true,
+        elevation: 0,
+        actions: [
+          Image.asset(
+            'assets/logo.png',
+            height: 70,
+            fit: BoxFit.contain,
+            errorBuilder: (context, error, stackTrace) {
+              return const Icon(
+                Icons.image_not_supported,
+                size: 72,
+                color: Colors.grey,
+              );
+            },
+          ),
+        ],
+      ),
       body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          child: FutureBuilder(
+            future: categories,
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Text('${snapshot.error}');
+              }
+              if (!snapshot.hasData) {
+                return CircularProgressIndicator();
+              }
+              return ListView(
+                scrollDirection: Axis.vertical,
                 children: [
-                  RichText(
-                    text: const TextSpan(
-                      text: 'Koyama',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      children: [
-                        TextSpan(
-                          text: 'Sushi',
-                          style: TextStyle(color: Colors.red),
-                        ),
-                      ],
+                  SizedBox(
+                    height: 75,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      children: List.generate(6, (index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: _CategoryButton(index: index),
+                        );
+                      }),
                     ),
                   ),
-                  // Imagen del logo en la parte derecha superior
-                  Image.asset(
-                    'assets/logo.png',
-                    height: 70,
-                    fit: BoxFit.contain,
-                    errorBuilder: (context, error, stackTrace) {
-                      return const Icon(
-                        Icons.image_not_supported,
-                        size: 72,
-                        color: Colors.grey,
-                      );
-                    },
+                  ...snapshot.data!.map(
+                    (category) => CategorySection(preview: category),
                   ),
                 ],
-              ),
-            ),
-
-            FutureBuilder(
-              future: categories,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return Column(
-                    children:
-                        snapshot.data!
-                            .map(
-                              (category) => CategorySection(preview: category),
-                            )
-                            .toList(),
-                  );
-                } else if (snapshot.hasError) {
-                  return Text('${snapshot.error}');
-                }
-                return const CircularProgressIndicator();
-              },
-            ),
-
-            // Carrusel de categorías con imágenes
-            SizedBox(
-              height: 75,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                children: List.generate(6, (index) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: _CategoryButton(index: index),
-                  );
-                }),
-              ),
-            ),
-          ],
+              );
+            },
+          ),
         ),
       ),
 

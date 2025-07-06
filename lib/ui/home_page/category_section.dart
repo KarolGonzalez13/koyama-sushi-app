@@ -15,21 +15,22 @@ class CategorySection extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: Text(
             preview.name,
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+              fontFamily: "Times New Roman",
+            ),
           ),
         ),
+        if (preview.description != null) (Text(preview.description!)),
 
-        Expanded(
-          child: GridView.count(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            crossAxisCount: 2,
-            mainAxisSpacing: 10,
-            crossAxisSpacing: 10,
-            childAspectRatio: 0.8,
+        SizedBox(
+          width: double.infinity,
+          height: 150,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
             children:
-                preview.dishes.map((dish) {
-                  return DishCard(preview: dish);
-                }).toList(),
+                preview.dishes.map((dish) => DishCard(preview: dish)).toList(),
           ),
         ),
       ],

@@ -1,14 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:koyama/database/collections.dart';
 import 'package:koyama/database/home_page/category_preview.dart';
-import 'package:koyama/database/home_page/dish_preview.dart';
+import 'package:koyama/database/home_page/dish_with_variations_preview.dart';
+import 'package:koyama/database/home_page/regular_dish_preview.dart';
 
-Future<DishPreview> getDishPreview(
+Future<dynamic> getDishPreview(
   QueryDocumentSnapshot<Map<String, dynamic>> dish,
 ) async {
   var variations = await dish.reference.collection("variations").get();
   var data = dish.data();
-  return DishPreview(
+
+  if (data["type"] == "regular-dish") {
+    return RegularDishPreview(
+      name: data["name"],
+      price: data["price"],
+      imageUrl: data["imageUrl"],
+    );
+  }
+
+  return DishWithVariationsPreview(
     name: data["name"],
     imageUrl: data["imageUrl"],
     variations:
@@ -42,5 +52,7 @@ Future<CategoryPreview> getDishCategory(
 
 Future<List<CategoryPreview>> fetch() async {
   var categories = await Collections.category().get();
-  return await Future.wait(categories.docs.map(getDishCategory));
+  return await Future.wait(categories.docs.map(getDishCategory)).then((value) {
+    return value;
+  });
 }

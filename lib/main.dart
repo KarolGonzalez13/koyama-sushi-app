@@ -9,20 +9,6 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  // final user = <String, dynamic>{
-  //   "first": "Ada",
-  //   "last": "Lovelace",
-  //   "born": 1815,
-  // };
-
-  // db
-  //     .collection("users")
-  //     .add(user)
-  //     .then(
-  //       (DocumentReference doc) =>
-  //           print('DocumentSnapshot added with ID: ${doc.id}'),
-  //     );
-
   runApp(const MainApp());
 }
 

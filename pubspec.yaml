@@ -21,3 +21,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/
+  fonts:
+    - family: "Times New Roman"
+      fonts:
+        - asset: assets/fonts/times-new-roman/font.ttf
