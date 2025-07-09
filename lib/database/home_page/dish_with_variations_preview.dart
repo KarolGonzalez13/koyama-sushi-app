@@ -1,16 +1,20 @@
 class DishWithVariationsPreview {
   String name;
   String? imageUrl;
-  List<({String name, double price})>? variations;
+  List<({String name, double price})> variations;
+  String? description;
+  String? defaultImageUrl;
 
   DishWithVariationsPreview({
     required this.name,
     this.imageUrl,
-    this.variations,
+    required this.variations,
+    this.description,
+    this.defaultImageUrl,
   });
 
   @override
   String toString() {
-    return 'DishPreview(name: $name, imageUrl: $imageUrl, variations: ${variations?.map((v) => "{name: ${v.name}, price: ${v.price}}").toList()})';
+    return 'DishWithVariationsPreview(name: $name, imageUrl: $imageUrl, variations: ${variations.map((v) => "{name: ${v.name}, price: ${v.price}}").toList()}, description: $description, defaultImageUrl: $defaultImageUrl)';
   }
 }

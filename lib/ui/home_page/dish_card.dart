@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:koyama/database/home_page/dish_with_variations_preview.dart'
     as home_page;
 import 'package:koyama/database/home_page/regular_dish_preview.dart';
+import 'package:koyama/ui/_lib/defaultable_image.dart';
 
 String titleCase(String input) {
   if (input.isEmpty) return input;
@@ -77,55 +78,48 @@ Widget getVariationsList(List<({String name, double price})> variations) {
 
 class DishCard extends StatelessWidget {
   dynamic preview;
+  void Function(dynamic) showDishDetails;
 
-  DishCard({super.key, required this.preview});
+  DishCard({super.key, required this.preview, required this.showDishDetails});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(8),
-      child: SizedBox.square(
-        dimension: 150,
-        child: Stack(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(120, 202, 202, 202),
-                borderRadius: BorderRadius.circular(16),
-              ),
-            ),
-            Positioned(
-              left: 0,
-              top: 0,
-              child: Image.network(
-                preview.imageUrl ?? '',
-                width: 150,
-                height: 150,
+    final double cardDimension = 150.0;
+
+    return GestureDetector(
+      onTap: () => showDishDetails(preview),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 8.0),
+        child: Container(
+          width: cardDimension,
+          height: cardDimension,
+          decoration: BoxDecoration(
+            color: const Color.fromARGB(120, 223, 223, 223),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          clipBehavior: Clip.hardEdge,
+          child: Stack(
+            children: [
+              DefaultableImage(
+                src: preview.imageUrl,
+                defaultSrc: preview.defaultImageUrl,
+                dimension: cardDimension,
                 fit: BoxFit.cover,
                 opacity: AlwaysStoppedAnimation(0.35),
-                errorBuilder: (context, error, stackTrace) {
-                  return Image.asset(
-                    "assets/categoria_3.png",
-                    width: 150,
-                    height: 150,
-                    fit: BoxFit.cover,
-                    opacity: AlwaysStoppedAnimation(0.35),
-                  );
-                },
               ),
-            ),
-            Positioned(
-              bottom: 0,
-              left: 0,
-              child: SizedBox(
-                width: 150,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: getDishTitle(preview),
+              Positioned(
+                bottom: 0,
+                left: 0,
+                child: SizedBox(
+                  width: cardDimension,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: getDishTitle(preview),
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

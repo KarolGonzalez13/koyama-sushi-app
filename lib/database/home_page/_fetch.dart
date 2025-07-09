@@ -6,6 +6,7 @@ import 'package:koyama/database/home_page/regular_dish_preview.dart';
 
 Future<dynamic> getDishPreview(
   QueryDocumentSnapshot<Map<String, dynamic>> dish,
+  String? defaultImageUrl, // Pass defaultImageUrl
 ) async {
   var variations = await dish.reference.collection("variations").get();
   var data = dish.data();
@@ -14,13 +15,19 @@ Future<dynamic> getDishPreview(
     return RegularDishPreview(
       name: data["name"],
       price: data["price"],
-      imageUrl: data["imageUrl"],
+      imageUrl:
+          data["imageUrl"] ??
+          defaultImageUrl, // Use defaultImageUrl if imageUrl is null
+      description: data["description"],
+      defaultImageUrl: defaultImageUrl, // Pass defaultImageUrl
     );
   }
 
   return DishWithVariationsPreview(
     name: data["name"],
-    imageUrl: data["imageUrl"],
+    imageUrl:
+        data["imageUrl"] ??
+        defaultImageUrl, // Use defaultImageUrl if imageUrl is null
     variations:
         variations.docs.map((variation) {
           var price = variation["price"];
@@ -29,6 +36,8 @@ Future<dynamic> getDishPreview(
             price: price is int ? price.toDouble() : price as double,
           );
         }).toList(),
+    description: data["description"],
+    defaultImageUrl: defaultImageUrl, // Pass defaultImageUrl
   );
 }
 
@@ -39,20 +48,29 @@ Future<CategoryPreview> getDishCategory(
       await Collections.dish()
           .where("category", isEqualTo: category.reference)
           .get();
+  var defaultDishImage = category.data()["defaultDishImage"];
   var dishPreviews = await Future.wait(
-    dishes.docs.map(getDishPreview).toList(),
+    dishes.docs.map((dish) => getDishPreview(dish, defaultDishImage)).toList(),
   );
   var dishCategory = CategoryPreview(
     name: category.data()["name"],
-    dishes: dishPreviews,
     description: category.data()["description"],
+    imageUrl: category.data()["imageUrl"] ?? "",
+    dishes: dishPreviews,
   );
   return dishCategory;
 }
 
 Future<List<CategoryPreview>> fetch() async {
   var categories = await Collections.category().get();
-  return await Future.wait(categories.docs.map(getDishCategory)).then((value) {
+  var results = await Future.wait(categories.docs.map(getDishCategory)).then((
+    value,
+  ) {
     return value;
   });
+
+  print("These are the results");
+  print(results);
+
+  return results;
 }

@@ -8,6 +8,8 @@ Aplicación móvil de menú para un negocio local de sushi
 type Category = {
     name: string;
     description?: string;
+    imageUrl: string;          // transparent-background image that represents the whole category
+    defaultDishImage: string;  // image used to render whenever a dish of this category doesn't render its image properly
 };
 
 type _DishWithVariations = {
